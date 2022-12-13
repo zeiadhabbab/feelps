@@ -13,7 +13,40 @@ File structure:
 /* Input/Buttons */
 /* This has to be a non font-based unit */
 /* Sub nav */
-/* Font */@font-face {
+/* Font */
+
+/* Misc */
+/* Store availability variables */
+/* Price slider variables */
+/*Accordion variables*/
+/* Contain floats: nicolasgallagher.com/micro-clearfix-hack/ */
+/*! normalize.css v1.0.0 | MIT License | git.io/normalize */
+article, aside, details, figcaption, figure, footer, header, hgroup, nav, section, summary {
+  display: block;
+}
+
+audio, canvas, video {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+}
+
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+[hidden] {
+  display: none;
+}
+
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+@font-face {
   font-family: "Open Sans";
   font-weight: 400;
   font-style: normal;
@@ -76,36 +109,7 @@ File structure:
        url("https://fonts.shopifycdn.com/open_sans/opensans_n4.8512334118d0e9cf94c4626d298dba1c9f12a294.woff?h1=ZmVlbHN0b3JlLnBz&hmac=c6dbfe116e221f86981948e7795fc68cc54926c993676a34377c87a9a193cd32") format("woff");
 }
 
-/* Misc */
-/* Store availability variables */
-/* Price slider variables */
-/*Accordion variables*/
-/* Contain floats: nicolasgallagher.com/micro-clearfix-hack/ */
-/*! normalize.css v1.0.0 | MIT License | git.io/normalize */
-article, aside, details, figcaption, figure, footer, header, hgroup, nav, section, summary {
-  display: block;
-}
 
-audio, canvas, video {
-  display: inline-block;
-  *display: inline;
-  *zoom: 1;
-}
-
-audio:not([controls]) {
-  display: none;
-  height: 0;
-}
-
-[hidden] {
-  display: none;
-}
-
-html {
-  font-size: 100%;
-  -webkit-text-size-adjust: 100%;
-  -ms-text-size-adjust: 100%;
-}
 
 html, button, input, select, textarea {
   font-family: sans-serif;
