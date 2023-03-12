@@ -1,1 +1,172 @@
-{"sections":{"main":{"type":"main-product","blocks":{"faaa38bf-951e-4e53-b0be-eb04fbf9fcc9":{"type":"vendor_and_type","settings":{"prod_show_brand":true,"prod_show_type":false}},"title":{"type":"title","settings":{"heading_h1":true}},"price":{"type":"price","settings":{"show_tax_and_shipping":false}},"c6e77d6b-72da-4794-9e14-d8a7d50048b2":{"type":"variant_picker","settings":{"prod_clicky_opt_names":"","stock_warning_show":false,"stock_warning_limit":5}},"c610cf35-1184-498d-af06-8e980742934b":{"type":"divider","settings":{"show_line":true,"spacing_above":"small","spacing_below":"small","show_in_quickbuy":true}},"buy_buttons":{"type":"buy_buttons","settings":{"enable_payment_button":true,"show_pickup_availability":false,"show_backorder_text":true}},"d5aca7ed-b846-4bbe-9caf-8551ac2d3f36":{"type":"description","settings":{"show_in_quickbuy":false,"display":"tab_open"}},"038ca5f4-243b-4736-97db-b626cbe5adad":{"type":"social","settings":{}}},"block_order":["faaa38bf-951e-4e53-b0be-eb04fbf9fcc9","title","price","c6e77d6b-72da-4794-9e14-d8a7d50048b2","c610cf35-1184-498d-af06-8e980742934b","buy_buttons","d5aca7ed-b846-4bbe-9caf-8551ac2d3f36","038ca5f4-243b-4736-97db-b626cbe5adad"],"settings":{"page_width":"medium","description_below":false,"enable_video_looping":false,"enable_product_image_zoom":false}},"163527853342cb780b":{"type":"text-with-icons","blocks":{"163527853342cb780b-1":{"type":"text_block","settings":{"icon":"chat_bubble","title":"مواد عضوية","text":"<p>منتجات عضوية صديقة للبيئة<\/p>","link":""}},"163527853342cb780b-2":{"type":"text_block","settings":{"icon":"truck","title":"معايير الجودة","text":"<p>جودة منتجاتنا لا مثيل لها<\/p>","link":""}},"163527853342cb780b-0":{"type":"text_block","settings":{"icon":"box","title":"صنع محلي","text":"<p>كل منتجاتنا محلية الصنع<\/p>","link":""}}},"block_order":["163527853342cb780b-1","163527853342cb780b-2","163527853342cb780b-0"],"settings":{"section_spacing":"medium","icon_alignment":"center","icon_width":64,"title_size":18,"text_size":14,"icon_color":"#191817","text_color":"#191817","background_color":"#fbfbfb","mobile_stack":true}},"1635279271ef0102e6":{"type":"slideshow","settings":{"height":"fixed","height_desktop":600,"height_mobile":500,"full_width":true,"mobile_overlay_under":false,"image_overlay_style":"standard","slide_transition":"slide","slide_navigation":"arrows","autoplay":true,"autoplay_speed":7}},"product-recommendations":{"type":"product-recommendations","settings":{"recommendations_title":"قد يعجبك أيضا","grid_show_vendor":true,"products_per_row":4}}},"order":["main","163527853342cb780b","1635279271ef0102e6","product-recommendations"]}
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "faaa38bf-951e-4e53-b0be-eb04fbf9fcc9": {
+          "type": "vendor_and_type",
+          "settings": {
+            "prod_show_brand": true,
+            "prod_show_type": false
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "heading_h1": true
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "show_tax_and_shipping": false
+          }
+        },
+        "c6e77d6b-72da-4794-9e14-d8a7d50048b2": {
+          "type": "variant_picker",
+          "settings": {
+            "prod_clicky_opt_names": "",
+            "stock_warning_show": false,
+            "stock_warning_limit": 5
+          }
+        },
+        "c610cf35-1184-498d-af06-8e980742934b": {
+          "type": "divider",
+          "settings": {
+            "show_line": true,
+            "spacing_above": "small",
+            "spacing_below": "small",
+            "show_in_quickbuy": true
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "enable_payment_button": true,
+            "show_pickup_availability": false,
+            "show_backorder_text": true
+          }
+        },
+        "d5aca7ed-b846-4bbe-9caf-8551ac2d3f36": {
+          "type": "description",
+          "settings": {
+            "show_in_quickbuy": false,
+            "display": "tab_open"
+          }
+        },
+        "038ca5f4-243b-4736-97db-b626cbe5adad": {
+          "type": "social",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "faaa38bf-951e-4e53-b0be-eb04fbf9fcc9",
+        "title",
+        "price",
+        "c6e77d6b-72da-4794-9e14-d8a7d50048b2",
+        "c610cf35-1184-498d-af06-8e980742934b",
+        "buy_buttons",
+        "d5aca7ed-b846-4bbe-9caf-8551ac2d3f36",
+        "038ca5f4-243b-4736-97db-b626cbe5adad"
+      ],
+      "settings": {
+        "page_width": "medium",
+        "description_below": false,
+        "enable_video_looping": false,
+        "enable_product_image_zoom": false
+      }
+    },
+    "163527853342cb780b": {
+      "type": "text-with-icons",
+      "blocks": {
+        "9c6e87f5-6e04-4e08-9d84-95366b685f55": {
+          "type": "text_block",
+          "settings": {
+            "icon": "check_mark",
+            "image": "shopify:\/\/shop_images\/Asset_11_2x_b70a85e6-5efe-4f3c-bebb-f9e73f72b21b.png",
+            "title": "امكانية الدفع النقدي عند الاستلام",
+            "text": "",
+            "link": ""
+          }
+        },
+        "163527853342cb780b-1": {
+          "type": "text_block",
+          "settings": {
+            "icon": "chat_bubble",
+            "image": "shopify:\/\/shop_images\/Asset_13_2x_4ededbb3-8993-4328-a0fd-a2348909783a.png",
+            "title": "خدمة زبائن متميزة",
+            "text": "",
+            "link": ""
+          }
+        },
+        "163527853342cb780b-2": {
+          "type": "text_block",
+          "settings": {
+            "icon": "truck",
+            "image": "shopify:\/\/shop_images\/Asset_7_2x_8953b307-d8c7-4f99-bf97-e23179fdfb9e.png",
+            "title": "توصيل سريع للبيت",
+            "text": "",
+            "link": ""
+          }
+        },
+        "163527853342cb780b-0": {
+          "type": "text_block",
+          "settings": {
+            "icon": "box",
+            "image": "shopify:\/\/shop_images\/Asset_12_2x_1ea501f2-faef-4048-a45a-3e9198f2bfe6.png",
+            "title": "منتجات أصلية ومكفولة",
+            "text": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "9c6e87f5-6e04-4e08-9d84-95366b685f55",
+        "163527853342cb780b-1",
+        "163527853342cb780b-2",
+        "163527853342cb780b-0"
+      ],
+      "settings": {
+        "section_spacing": "medium",
+        "icon_alignment": "center",
+        "icon_width": 64,
+        "title_size": 18,
+        "text_size": 14,
+        "icon_color": "#191817",
+        "text_color": "#191817",
+        "background_color": "#fbfbfb",
+        "mobile_stack": true
+      }
+    },
+    "1635279271ef0102e6": {
+      "type": "slideshow",
+      "settings": {
+        "height": "fixed",
+        "height_desktop": 600,
+        "height_mobile": 500,
+        "full_width": true,
+        "mobile_overlay_under": false,
+        "image_overlay_style": "standard",
+        "slide_transition": "slide",
+        "slide_navigation": "arrows",
+        "autoplay": true,
+        "autoplay_speed": 7
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "recommendations_title": "قد يعجبك أيضا",
+        "grid_show_vendor": true,
+        "products_per_row": 4
+      }
+    }
+  },
+  "order": [
+    "main",
+    "163527853342cb780b",
+    "1635279271ef0102e6",
+    "product-recommendations"
+  ]
+}
