@@ -6662,4 +6662,3 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     }
   });
 })(theme.jQuery);  
-/* Built with Barry v1.0.7 */
