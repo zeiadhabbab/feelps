@@ -20,14 +20,19 @@
   {% if locale_name == 'العربية'%} 
   {{ 'rtl.css' | asset_url | stylesheet_tag }}
   {%- endif -%}   
-  
+<script>
+  Shopify.money_format = {{ shop.money_format | json }};
+</script>
+<script type="text/javascript" src="https://bcdn.starapps.studio/apps/vtk/feelps/script-1664989045.js?shop={{shop.permanent_domain}}" async></script>
+
   <script>
     document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
     window.theme = window.theme || {};
     theme.money_format = {{ shop.money_format | json }};
     theme.customerIsLoggedIn = {% if shop.customer_accounts_enabled and customer %}true{% else %}false{% endif %};
     theme.shippingCalcMoneyFormat = {{ shop.money_with_currency_format | json }};
-
+  </script>
+  <script>
     theme.strings = {
       previous: {{ 'general.accessibility_labels.previous' | t | json }},
       next: {{ 'general.accessibility_labels.next' | t | json }},
@@ -71,7 +76,8 @@
       fullDetails: {{ 'products.general.full_details' | t | json }},
       cartConfirmRemove: {{ 'cart.general.confirm_remove' | t | json }}
     };
-
+  </script>
+  <script>
     theme.routes = {
       root_url: '{{ routes.root_url }}',
       account_url: '{{ routes.account_url }}',
@@ -88,7 +94,8 @@
       cart_change_url: '{{ routes.cart_change_url }}',
       cart_clear_url: '{{ routes.cart_clear_url }}'
     };
-
+  </script>
+  <script>
     theme.scripts = {
       masonry: {{ 'masonry.v3.2.2.min.js' | asset_url | json }},
       jqueryInfiniteScroll: {{ 'jquery.infinitescroll.2.1.0.min.js' | asset_url | json }},
@@ -96,7 +103,8 @@
       shopifyCommon: {{ 'shopify_common.js' | shopify_asset_url | json }},
       jqueryCart: {{ 'shipping-calculator.v1.0.min.js' | asset_url | json }}
     };
-
+  </script>
+  <script>
     theme.settings = {
       cartType: {{ settings.cart_type | json }},
       openCartDrawerOnMob: {{ settings.open_drawer_on_mobile | json }},
@@ -105,17 +113,11 @@
     }
   </script>
 
-  <!-- starapps_scripts_start -->
-<!-- This code is automatically managed by StarApps Studio -->
-<!-- Please contact support@starapps.studio for any help -->
 
-<script type="text/javascript" src="https://bcdn.starapps.studio/apps/vtk/feelps/script-1664989045.js?shop={{shop.permanent_domain}}" async></script>
-<!-- starapps_scripts_end -->
+
 {{ content_for_header }}
 
-  <script>
-    Shopify.money_format = {{ shop.money_format | json }};
-  </script>
+
 </head>
 
 {%- assign homepage_divider_col_opacity = settings.homepage_divider_col | color_extract: 'alpha' -%}
