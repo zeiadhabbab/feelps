@@ -1,0 +1,245 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@200;400;500;900&display=swap');
+* {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.currency-selector .doubly-nice-select {
+    border: 0px!important;
+    background: none;
+    height: unset;
+    line-height: 40px!important;
+}
+
+.currency-selector .flags {
+    display: none;
+}
+
+.currency-selector .doubly-nice-select.right .list {
+    overflow: hidden!important;
+}
+
+.currency-selector .doubly-nice-select .option {
+    padding-right: 18px!important;
+    padding-left: 18px!important;
+}
+
+.currency-selector .doubly-nice-select:after {
+    border-bottom: 1.5px solid rgb(var(--color-foreground));
+    border-right: 1.5px solid rgb(var(--color-foreground));
+    height: 4px;
+    top: 16px!important;
+    width: 4px;
+    right: 6px;
+}
+
+.doubly-nice-select.right {
+    padding-left: 5px;
+    padding-right: 20px;
+    top: 2px;
+}
+
+.doubly-wrapper {
+    margin-right: 10px;
+}
+
+.announcement-bar__message {
+    color: rgb(var(--color-foreground));
+    color: #fff;
+}
+
+.header-localization form {
+    margin: 0!important;
+    padding: 0!important;
+}
+
+.header-localization .localization-form__select:after {
+    border: 0!important;
+    box-shadow: none!important;
+}
+
+.header-localization .localization-form:only-child .localization-form__select {
+    margin: 0!important;
+}
+
+.slider-counter {
+    display: none!important;
+}
+
+.footer__copyright {
+    text-align: center;
+}
+
+.copyright__content {
+    text-align: center;
+}
+
+.eg-wishlist-drawer-product-list-item a {
+    margin-right: 1rem;
+}
+
+
+
+.top-bar {
+    z-index: 100001;
+    background: #ebebeb;
+    border-bottom: 7px solid #C2D500!important;
+}
+
+
+@media screen and (min-width: 990px){
+    .header {
+        min-width: 100%;
+        padding: 0px;
+    }
+}
+
+
+nav.header__inline-menu {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    background-color: #2a00ff;
+    border-bottom: 7px solid #C2D500!important;
+    padding: 5px;
+}
+.header--top-center .mega-menu__list>li {
+    width: 100%  !important;
+    padding-right: 2.4rem;
+}
+a#cart-icon-bubble {
+    margin-right: 8px;
+}
+
+
+.header--top-center .header__inline-menu>.list-menu--inline {
+    justify-content: center;
+}
+
+ul.list-menu.list-menu--inline li * {
+    color: #fff;
+}
+
+.mega-menu__content {
+    background: #2a00ff !important;
+    width: 275px;
+}
+
+.mega-menu__content {
+    left: auto !important;
+    right: auto !important;
+}
+
+
+
+/*Zeiad*/
+.lazyload--placeholder {
+    background: none !important;
+}
+
+
+.opposing-items.opposing-items--heading {
+    border-bottom: 2px solid;
+    padding-bottom: 17px;
+    border-color: #2a00ff;
+    background: #E7E8E9;
+    padding-top: 18px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+
+.use-alt-bg .opposing-items.opposing-items--heading {
+    border-bottom: 2px solid;
+    padding-bottom: 17px;
+    border-color: #ffffff;
+    background: transparent;
+    padding-top: 18px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+
+
+
+
+
+
+
+.page-header {
+    border-bottom: 7px solid #C2D500 !important;
+}
+
+
+.template-index .column-container.column-count--3.align-center {
+    max-width: 1070px;
+    margin: 0 auto;
+}
+
+
+.template-index .text-column {
+    position: relative;
+}
+
+.template-index .text-column  .text-column__title {
+    position: absolute;
+    bottom: 4px;
+    text-align: center !important;
+    left: 0;
+    right: 0;
+    background: #E1007E;
+    color: white;
+    line-height: 75px;
+    border-radius: 0px 0px 15px 15px;
+}
+
+.template-index .text-column:first-child .text-column__title {
+    background: #C2D500;
+}
+
+
+.template-index .text-column:last-child .text-column__title {
+    background: #2A00FF;
+}
+
+label[for=pa_Size].name-option {
+    text-align: right !important;
+    width: 61px;
+}
+
+@media (min-width: 1000px) {
+
+    .thumbnails.slick-slider--indented-side-icons.slick-slider--all-visible.slick-initialized.slick-slider {
+        width: 20%;
+        float: left;
+        margin-top: 0px;
+
+    }
+
+    .product-gallery .main {
+        width: 78%;
+        float: right;
+    }
+
+    .product-gallery .slick-slide {
+        float: none;
+        display: block;
+    }
+
+    .product-media.product-media--image {
+        border: 1px solid #ccc;
+    }
+
+    a.thumbnail.thumbnail--media-image.slick-slide {
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        width: 85px !important;
+    }
+
+    .product-gallery .thumbnails {
+        margin: -1px 0 0;
+    }
+
+}

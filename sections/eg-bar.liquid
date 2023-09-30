@@ -1,0 +1,368 @@
+{% if section.settings.show %}
+{% if section.settings.homepage == false or template.name == 'index' %}
+
+{% comment %}theme-check-disable{% endcomment %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.12/dist/css/splide.min.css" integrity="sha256-sB1O2oXn5yaSW1T/92q2mGU86IDhZ0j1Ya8eSv+6QfM=" crossorigin="anonymous">
+
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.12/dist/js/splide.min.js" integrity="sha256-b/fLMBwSqO9vy/phDPv6OufPpR+VfUL+OsTEkJMPg+Q=" crossorigin="anonymous" defer></script>
+{% comment %}theme-check-enable{% endcomment %}
+
+<style>
+    /*
+        General styles
+    */
+    .img-fluid {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .text-nowrap {
+        white-space: nowrap;
+    }
+
+    .text-sm {
+        font-size: .8em;
+    }
+
+    .text-lg {
+        font-size: 1.2em;
+    }
+
+    .fw-bold {
+        font-weight: bold;
+    }
+
+    .text-uppercase {
+        text-transform: uppercase;
+    }
+
+    .text-capitalize {
+        text-transform: capitalize;
+    }
+
+    /*
+        Section styling
+    */
+    .eg-announcement-bar a {
+        display: block;
+        text-decoration: none;
+        transition: all .2s ease-out;
+    }
+
+    .eg-announcement-bar a svg {
+       transition: all .2s ease-out;
+       {% if shop.locale contains 'ar' %}
+       margin-right: .25rem;
+       {% else %}
+       margin-left: .25rem;
+       {% endif %}
+    }
+
+    .eg-announcement-bar a:hover {
+        opacity: .75;
+    }
+
+    .eg-announcement-bar a:hover svg {
+        {% if shop.locale contains 'ar' %}
+        margin-right: 1rem;
+        {% else %}
+        margin-left: 1rem;
+        {% endif %}
+    }
+
+    .eg-announcement-bar p {
+        margin: 0;
+    }
+
+    .eg-announcement-bar .splide__slide__inner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    .eg-announcement-bar .splide__arrow {
+        background: transparent;
+    }
+
+    .eg-announcement-bar .splide__arrow--prev {
+        left: 0;
+    }
+
+    .eg-announcement-bar .splide__arrow--next {
+        right: 0;
+    }
+
+    /*
+        Styles based on settings
+    */
+    #eg-announcement-bar-{{ section.id }} {
+        {% unless section.settings.bg_color == 'rgba(0,0,0,0)' %}
+            background-color: {{ section.settings.bg_color }};
+        {% endunless %}
+        {% unless section.settings.color == 'rgba(0,0,0,0)' %}
+            color: {{ section.settings.text_color }};
+        {% endunless %}
+        padding-top: {{ section.settings.pt }}rem;
+        padding-bottom: {{ section.settings.pb }}rem;
+        margin-top: {{ section.settings.mt }}rem;
+        margin-bottom: {{ section.settings.mb }}rem;
+    }
+
+    #eg-announcement-bar-{{ section.id }} a {
+        {% unless section.settings.color == 'rgba(0,0,0,0)' %}
+            color: {{ section.settings.text_color }};
+        {% endunless %}
+    }
+
+    #eg-announcement-bar-{{ section.id }} .splide__arrow svg {
+        fill: currentColor;
+        {% unless section.settings.color == 'rgba(0,0,0,0)' %}
+            fill: {{ section.settings.text_color }};
+        {% endunless %}
+    }
+
+    /* Dummy code to fix editor styling */
+    {}
+</style>
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const initSplide = () => {
+            const section = document.querySelector('#eg-announcement-bar-{{ section.id }}')
+
+            const showArrows = section.dataset.showArrows === 'true' && section.querySelectorAll('.splide__slide').length > 1
+            const autoplay = section.dataset.autoplay === 'true'
+            const interval = 5000
+            const speed = Number(section.dataset.speed) * 1000
+
+            const splide = new Splide('#eg-announcement-bar-{{ section.id }} .splide', {
+                type: 'loop',
+                pagination: false,
+                arrows: showArrows,
+                autoplay: autoplay,
+                interval: interval,
+                speed: speed
+            })
+            splide.mount()
+        }
+        initSplide()
+
+        document.addEventListener('shopify:section:load', (e) => {
+            if (e.target.querySelector('#eg-announcement-bar-{{ section.id }} .splide')) {
+                initSplide()
+            }
+        })
+    })
+</script>
+
+
+<section
+    id="eg-announcement-bar-{{ section.id }}"
+    class="eg-announcement-bar {{ section.settings.font_size }} {{ section.settings.font_weight }} {{ section.settings.text_transform }}"
+    data-show-arrows="{{ section.settings.arrows }}"
+    data-autoplay="{{ section.settings.autoplay }}"
+    data-speed="{{ section.settings.speed }}">
+    <div class="splide">
+        <div class="splide__track">
+            <ul class="splide__list">
+                {% for block in section.blocks %}
+                    <li class="splide__slide">
+                        {% unless block.settings.url == blank %}
+                            <a href="{{ block.settings.url }}">
+                        {% endunless %}
+                            <div class="splide__slide__inner">
+                                {{ block.settings.description }}
+                                {% unless block.settings.url == blank %}
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="18"
+                                        height="18"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M5 12h13M12 5l7 7-7 7"/>
+                                    </svg>
+                                {% endunless %}
+                            </div>
+                        {% unless block.settings.url == blank %}
+                            </a>
+                        {% endunless %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</section>
+
+{% endif %}
+{% endif %}
+
+
+{% schema %}
+{
+    "name": "Announcement bar",
+    "settings": [
+        {
+            "type": "header",
+            "content": "General"
+        },
+        {
+            "type": "checkbox",
+            "id": "show",
+            "label": "Show announcement bar",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "homepage",
+            "label": "Show only on homepage",
+            "info": "Applies only if this section is loaded statically",
+            "default": true
+        },
+        {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Background color",
+            "default": "#121212"
+        },
+        {
+            "type": "color",
+            "id": "text_color",
+            "label": "Text color",
+            "default": "#ffffff"
+        },
+        {
+            "type": "select",
+            "id": "font_size",
+            "label": "Font size",
+            "default": "",
+            "options": [
+                { "value": "text-sm", "label": "Small" },
+                { "value": "", "label": "Default" },
+                { "value": "text-lg", "label": "Large" }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "font_weight",
+            "label": "Font weight",
+            "default": "",
+            "options": [
+                { "value": "", "label": "Normal" },
+                { "value": "fw-bold", "label": "Bold" }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "text_transform",
+            "label": "Text transform",
+            "default": "",
+            "options": [
+                { "value": "", "label": "Normal" },
+                { "value": "text-uppercase", "label": "Uppercase" },
+                { "value": "text-capitalize", "label": "Capitalize" }
+            ]
+        },
+        {
+            "type": "header",
+            "content": "Slider",
+            "info": "Will not show if you only publish one slide"
+        },
+        {
+            "type": "checkbox",
+            "id": "arrows",
+            "label": "Arrows",
+            "info": "Prev/Next buttons",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "autoplay",
+            "label": "Autoplay",
+            "info": "Every 5 seconds",
+            "default": true
+        },
+        {
+            "type": "range",
+            "id": "speed",
+            "label": "Speed",
+            "info": "The transition speed",
+            "default": 0.6,
+            "min": 0,
+            "max": 2,
+            "step": 0.1,
+            "unit": "sec"
+        },
+        {
+            "type": "header",
+            "content": "Spacing",
+            "info": "Based on 'rem' values [Learn more](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units)"
+        },
+        {
+            "type": "range",
+            "id": "pt",
+            "label": "Padding top",
+            "min": 0,
+            "max": 12,
+            "step": 1,
+            "default": 1
+        },
+        {
+            "type": "range",
+            "id": "pb",
+            "label": "Padding bottom",
+            "min": 0,
+            "max": 12,
+            "step": 1,
+            "default": 1
+        },
+        {
+            "type": "range",
+            "id": "mt",
+            "label": "Margin top",
+            "min": 0,
+            "max": 12,
+            "step": 1,
+            "default": 0
+        },
+        {
+            "type": "range",
+            "id": "mb",
+            "label": "Margin bottom",
+            "min": 0,
+            "max": 12,
+            "step": 1,
+            "default": 0
+        }
+    ],
+    "blocks": [
+        {
+            "type": "Announcement",
+            "name": "Announcement",
+            "settings": [
+                {
+                    "type": "richtext",
+                    "id": "description",
+                    "label": "Description"
+                },
+                {
+                    "type": "url",
+                    "id": "url",
+                    "label": "Link"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Announcement Bar",
+            "category": "General"
+        }
+    ]
+}
+{% endschema %}

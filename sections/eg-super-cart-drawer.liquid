@@ -1,0 +1,494 @@
+{% liquid
+
+%}
+
+<style>
+/*
+    Bootstrap Progress bar
+    https://github.com/twbs/bootstrap/blob/main/dist/css/bootstrap.css
+*/
+@-webkit-keyframes progress-bar-stripes {
+    0% { background-position-x: 1rem; }
+}
+
+@keyframes progress-bar-stripes {
+    0% { background-position-x: 1rem; }
+}
+
+.progress {
+    display: flex;
+    height: 1rem;
+    overflow: hidden;
+    font-size: 0.75rem;
+    background-color: #e9ecef;
+    border-radius: 50rem;
+}
+
+.progress-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #0d6efd;
+    transition: width 0.6s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .progress-bar { transition: none; }
+}
+
+.progress-bar-striped {
+    background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+    background-size: 1rem 1rem;
+}
+
+.progress-bar-animated {
+    -webkit-animation: 1s linear infinite progress-bar-stripes;
+    animation: 1s linear infinite progress-bar-stripes;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .progress-bar-animated {
+        -webkit-animation: none;
+        animation: none;
+    }
+}
+
+/*
+    Various small improvements in the current drawer
+*/
+.drawer {
+    background-color: transparent;
+    transition-property: all;
+}
+
+.drawer.active {
+    background-color: rgba(var(--color-foreground), .5);
+}
+
+.drawer__inner {
+    width: {{ section.settings.drawer_width }}px;
+    box-shadow: 0 0 1.5rem rgba(var(--color-foreground), .25);
+}
+
+@media (max-width: 500px) {
+    .drawer__inner {
+        width: 100vw;
+        max-width: none;
+    }
+}
+
+.drawer__heading {
+    margin: 0;
+}
+
+.drawer__close svg {
+    height: 1.5rem;
+    width: 1.5rem
+}
+
+/*
+    Cart items (table)
+*/
+.cart-drawer .cart-items th {
+    padding-bottom: 1rem;
+}
+
+/*
+    Taxes and shipping text
+*/
+.cart-drawer__footer .tax-note {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+/*
+    Payment Icons
+*/
+#eg-super-cart-drawer-payment-icons {
+    text-align: center;
+    margin: 1.25rem 0 -.75rem;
+}
+
+#eg-super-cart-drawer-payment-icons ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#eg-super-cart-drawer-payment-icons ul li {
+    display: flex;
+    margin: 0.125rem;
+}
+
+/*
+    Cart Goal
+*/
+#eg-super-cart-drawer-goal {
+    position: relative;
+    margin: 0 0 1.75rem;
+}
+
+#eg-super-cart-drawer-goal .rte {
+    text-align: center;
+    margin: 0 0 .25rem;
+}
+
+#eg-super-cart-drawer-goal .progress {
+    height: 1rem;
+}
+</style>
+
+<script>
+window.addEventListener('DOMContentLoaded', (event) => {
+
+    // Detect if the cart drawer is activated
+    if (!document.querySelector('cart-drawer')) {
+        return
+    }
+
+    // Taxes and Shipping text on the footer (show/hide)
+    const initTaxesShippingSetting = () => {
+        const show = {{ section.settings.show_taxes_shipping_text }}
+        const taxNote = document.querySelector('.cart-drawer__footer .tax-note')
+        const totals = document.querySelector('.cart-drawer__footer .totals')
+
+        if (taxNote && !show) {
+            taxNote.style.display = 'none'
+            totals.style.marginBottom = '1.5rem'
+        }
+    }
+    initTaxesShippingSetting()
+
+    // 'View cart' button setting
+    const initViewCartBtnSetting = () => {
+        const show = {{ section.settings.show_view_cart_btn }}
+
+        if (show) {
+            document.querySelector('.cart__ctas').insertAdjacentHTML('afterend', `
+            <a class="button button--full-width button--secondary" href="${window.routes.cart_url}" style="min-height: 3rem; margin-top: .75rem;">
+                    <span>{{ section.settings.text_btn_view_cart }}</span>
+                </a>
+            `)
+        }
+    }
+    initViewCartBtnSetting()
+
+     // Payment icons - dynamically load
+     const initPaymentIcons = () => {
+        const element = document.querySelector('#eg-super-cart-drawer-payment-icons')
+
+        if (element) {
+            document.querySelector('.drawer__footer').insertAdjacentElement('beforeend', element.cloneNode(true))
+            document.querySelector('#CartDrawer #eg-super-cart-drawer-payment-icons').style.display = 'block'
+        }
+    }
+    initPaymentIcons()
+
+    // Cart Goal feature
+    const initCartGoal = async (preload = false) => {
+        document.querySelector('#CartDrawer #eg-super-cart-drawer-goal')?.remove()
+
+        const element = document.querySelector('#eg-super-cart-drawer #eg-super-cart-drawer-goal')
+        const cartDrawerItems = document.querySelector('cart-drawer-items')
+
+        if (element && !cartDrawerItems.classList.contains('is-empty')) {
+            cartDrawerItems.insertAdjacentElement('afterbegin', element.cloneNode(true))
+            document.querySelector('#CartDrawer #eg-super-cart-drawer-goal').style.display = 'block'
+
+            const progressBar = document.querySelector('#CartDrawer #eg-super-cart-drawer-goal .progress-bar')
+
+            if (preload) {
+                document.querySelector('#CartDrawer #eg-super-cart-drawer-goal').style.opacity = '0.2'
+            } else {
+                setTimeout(() => {
+                    progressBar.style.width = progressBar.dataset.width
+                }, 250)
+            }
+        }
+    }
+    initCartGoal()
+
+    // Cart Note Improvments (add ajax save button)
+    const initCartNoteImprovments = () => {
+        const wrapper = document.querySelector('cart-drawer #Details-CartDrawer')
+
+        if (!wrapper) {
+            return
+        }
+
+        wrapper.insertAdjacentHTML('beforeend', `
+            <button class="button button--full-width button--secondary" type="button" data-text="{{ section.settings.text_btn_save_note }}" style="min-height: 3rem; margin-top: .75rem;">
+                <span>{{ section.settings.text_btn_save_note }}</span>
+                <div class="loading-overlay__spinner hidden">
+                    <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                      <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                    </svg>
+                </div>
+            </button>
+        `)
+
+        const btn = wrapper.querySelector('button')
+
+        btn.addEventListener('click', async () => {
+            btn.classList.add('loading')
+            btn.querySelector('.loading-overlay__spinner').classList.remove('hidden')
+
+            const note = wrapper.querySelector('#CartDrawer-Note').value
+
+            const response = await fetch('/cart/update.js', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ note })
+            })
+            const data = await response.json()
+            console.log(data)
+
+            btn.classList.remove('loading')
+            btn.querySelector('span').textContent = '✓'
+            btn.querySelector('.loading-overlay__spinner').classList.add('hidden')
+
+            setTimeout(() => {
+                btn.querySelector('span').textContent = btn.dataset.text
+            }, 2000)
+        })
+    }
+    initCartNoteImprovments()
+
+    // Checkout button improvemetns (add loading indicator on click)
+    const initCheckoutBtnImprovments = () => {
+        const btn = document.querySelector('#CartDrawer-Checkout')
+
+        btn.innerHTML = `
+            <span>${btn.textContent}</span>
+            <div class="loading-overlay__spinner hidden">
+                <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                </svg>
+            </div>
+        `
+
+        btn.addEventListener('click', async () => {
+            btn.classList.add('loading')
+            btn.querySelector('.loading-overlay__spinner').classList.remove('hidden')
+        })
+    }
+    initCheckoutBtnImprovments()
+
+    // Load super cart drawer feautures dynamically
+    const loadAjaxContent = async () => {
+        const respose = await fetch(window.location.href)
+        const data = await respose.text()
+        const newDocument = new DOMParser().parseFromString(data, 'text/html')
+
+        document.querySelector('#eg-super-cart-drawer')
+            ?.replaceWith(newDocument.querySelector('#eg-super-cart-drawer'))
+    }
+
+    // Listen to ajax changed in the drawer (throught class change)
+    const listenDrawerAjax = async () => {
+        const onMutation = async (mutations) => {
+            for (const mutation of mutations) {
+                if (mutation.type === 'childList') {
+                    for (const addedNode of mutation.addedNodes) {
+                        if (addedNode.classList?.contains('drawer__inner') || addedNode.classList?.contains('drawer__header') ) {
+                            initTaxesShippingSetting()
+                            initViewCartBtnSetting()
+                            initPaymentIcons()
+                            initCartNoteImprovments()
+                            initCheckoutBtnImprovments()
+                            initCartGoal(true)
+
+                            await loadAjaxContent()
+                            initCartGoal()
+                        }
+                    }
+                }
+            }
+        }
+
+        (new MutationObserver(onMutation)).observe(document.querySelector('#CartDrawer'), {
+            childList: true,
+            subtree: true
+        })
+    }
+    listenDrawerAjax()
+})
+</script>
+
+<div id="eg-super-cart-drawer">
+
+    {% comment %}
+        Payment Icons
+    {% endcomment %}
+    {% if section.settings.show_payment_icons and shop.enabled_payment_types != empty %}
+        <div id="eg-super-cart-drawer-payment-icons" style="display: none;">
+            <ul class="" aria-label="Support payment methods">
+                {% for type in shop.enabled_payment_types %}
+                    <li class="" title="{{ type | replace: "_", " " | camelcase }}">
+                        {{ type | payment_type_svg_tag: class: 'icon' }}
+                    </li>
+                {% endfor %}
+            </ul>
+            {% unless section.settings.text_payment_icons == blank %}
+                <small class="">
+                    {{ section.settings.text_payment_icons }}
+                </small>
+            {% endunless %}
+        </div>
+    {% endif %}
+
+    {% comment %}
+        Cart Goal
+    {% endcomment %}
+    {% unless section.settings.cart_goal_value == 0 %}
+        {% liquid
+            assign goal_value_with_cents = section.settings.cart_goal_value | times: 100
+
+            if cart.total_price < goal_value_with_cents
+                assign cart_goal_percentage = cart.total_price | divided_by: section.settings.cart_goal_value
+                assign cart_goal_color = section.settings.cart_goal_color_before
+                assign goal_remaining_money = goal_value_with_cents | minus: cart.total_price | money
+                assign cart_goal_desc = section.settings.cart_goal_description_before | replace: '[amount]', goal_remaining_money
+            else
+                assign cart_goal_percentage = 100
+                assign cart_goal_color = section.settings.cart_goal_color_after
+                assign cart_goal_desc = section.settings.cart_goal_description_after
+            endif
+        %}
+        <div id="eg-super-cart-drawer-goal" class="" style="display: none;">
+            <div class="rte caption-large" style="{% if cart_goal_percentage == 100 %}color: {{ cart_goal_color }};{% endif %}">
+                {{ cart_goal_desc }}
+            </div>
+            <div class="progress">
+                <div
+                    class="progress-bar progress-bar-striped progress-bar-animated"
+                    role="progressbar"
+                    aria-valuenow="{{ cart.total_price | money }}"
+                    aria-valuemin="0"
+                    aria-valuemax="{{ goal_value_with_cents | money }}"
+                    data-width="{{ cart_goal_percentage }}%"
+                    style="width: 0%; background-color: {{ cart_goal_color }};">
+                    <span style="font-size: 1rem;">
+                        {{ cart_goal_percentage }}%
+                    </span>
+                </div>
+            </div>
+        </div>
+    {% endunless %}
+
+</div>
+
+{% schema %}
+{
+    "name": "Super Cart Drawer",
+    "settings": [
+        {
+            "type": "paragraph",
+            "content": "IMPORTANT NOTE: Since the settings below are injected dynamically, you have to save the changes in the editor in order to see them take effect"
+        },
+        {
+            "type": "header",
+            "content": "General"
+        },
+        {
+            "type": "text",
+            "id": "drawer_width",
+            "label": "Drawer Width (px)",
+            "default": "400",
+            "info": "Note: On mobile, the drawer width will be always 100%"
+        },
+        {
+            "type": "header",
+            "content": "Footer"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_taxes_shipping_text",
+            "label": "Show 'Taxes & Shipping' text",
+            "info": "Please save the changes to see this setting take effect",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "show_view_cart_btn",
+            "label": "Show 'View cart' button",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "show_payment_icons",
+            "label": "Show payment icons",
+            "default": true
+        },
+        {
+            "type": "header",
+            "content": "Cart Goal"
+        },
+        {
+            "type": "range",
+            "id": "cart_goal_value",
+            "label": "Goal value",
+            "info": "Select 0 to disable this feature",
+            "min": 0,
+            "max": 500,
+            "default": 100,
+            "step": 5
+        },
+        {
+            "type": "richtext",
+            "id": "cart_goal_description_before",
+            "label": "Description - Goal not completed",
+            "default": "<p><strong>[amount]</strong> away from FREE Shipping!</p>"
+        },
+        {
+            "type": "color",
+            "id": "cart_goal_color_before",
+            "label": "BG color - Goal not completed",
+            "default": "#fd7e14"
+        },
+        {
+            "type": "richtext",
+            "id": "cart_goal_description_after",
+            "label": "Description - Goal completed",
+            "default": "<p>Congrats! You're eligible for <strong>FREE Shipping.</strong></p>"
+        },
+        {
+            "type": "color",
+            "id": "cart_goal_color_after",
+            "label": "BG color - Goal completed",
+            "default": "success",
+            "default": "#158754"
+        },
+        {
+            "type": "header",
+            "content": "Translatable Text"
+        },
+        {
+            "type": "text",
+            "id": "text_btn_view_cart",
+            "label": "View cart - button",
+            "default": "View cart"
+        },
+        {
+            "type": "text",
+            "id": "text_btn_save_note",
+            "label": "Save note - button",
+            "default": "Save note"
+        },
+        {
+            "type": "text",
+            "id": "text_payment_icons",
+            "label": "Payment icons - text below",
+            "default": "100% secure and protected payments"
+        }
+    ]
+}
+{% endschema %}

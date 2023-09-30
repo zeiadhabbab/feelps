@@ -1,0 +1,131 @@
+{% schema %}
+{
+    "name": "Quick View",
+    "settings": [
+        {
+            "type": "header",
+            "content": "General"
+        },
+        {
+            "type": "select",
+            "id": "modal_position",
+            "label": "Modal Position",
+            "default": "modal-dialog-centered",
+            "options": [
+                { "value": "", "label": "Top" },
+                { "value": "modal-dialog-centered", "label": "Center" }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "modal_size",
+            "label": "Modal size",
+            "default": "modal-xl",
+            "options": [
+                { "value": "modal-lg", "label": "LG" },
+                { "value": "modal-xl", "label": "XL" }
+            ]
+        },
+        {
+            "type": "header",
+            "content": "Product"
+        },
+        {
+            "type": "select",
+            "id": "product_img_orientation",
+            "label": "Product image orientation",
+            "default": "square",
+            "options": [
+                { "value": "square", "label": "Square" },
+                { "value": "landscape", "label": "Landscape" },
+                { "value": "potrait", "label": "Potrait" }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "product_title_size",
+            "label": "Title size",
+            "default": "h2",
+            "options": [
+                { "value": "h1", "label": "H1" },
+                { "value": "h2", "label": "H2" },
+                { "value": "h3", "label": "H3" },
+                { "value": "h4", "label": "H4" },
+                { "value": "h5", "label": "H5" },
+                { "value": "h6", "label": "H6" }
+            ]
+        },
+        {
+            "type": "checkbox",
+            "id": "product_show_description",
+            "label": "Show product description",
+            "default": true
+        },
+        {
+            "type": "text",
+            "id": "product_description_max_length",
+            "label": "Description max characters",
+            "info": "Shorten product description length. Leave empty to show it all.",
+            "default": "240"
+        },
+        {
+            "type": "checkbox",
+            "id": "product_show_form",
+            "label": "Show product form",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "product_show_learn_more_btn",
+            "label": "Show 'Learn more' button",
+            "default": true
+        },
+        {
+            "type": "text",
+            "id": "product_learn_more_btn_text",
+            "label": "'Learn more' button text",
+            "default": "Full details →"
+        },
+        {
+            "type": "header",
+            "content": "Carousel"
+        },
+        {
+            "type": "checkbox",
+            "id": "carousel_show_controls",
+            "label": "Show controls",
+            "info": "Prev/Next buttons",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "carousel_show_indicators",
+            "label": "Show indicators",
+            "info": "Small dots at the end",
+            "default": true
+        },
+        {
+            "type": "header",
+            "content": "Translatable Text"
+        },
+        {
+            "type": "text",
+            "id": "text_btn_quick_view",
+            "label": "Button - Quick View",
+            "default": "Quick view"
+        },
+        {
+            "type": "text",
+            "id": "text_price_regular",
+            "label": "Price - Regular",
+            "default": "Regular price"
+        },
+        {
+            "type": "text",
+            "id": "text_price_from",
+            "label": "Price - From",
+            "default": "From"
+        }
+    ]
+}
+{% endschema %}

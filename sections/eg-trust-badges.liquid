@@ -1,0 +1,173 @@
+<style>
+    /*
+        Section styling
+    */
+    .eg-trust-badges-list {
+        list-style: none;
+        display: flex;
+        padding: 0;
+        align-items: center;
+        justify-content: center;
+    }
+    .eg-trust-badge-item {
+        text-align: center;
+        padding: .75rem;
+    }
+    .eg-trust-badge-icon {
+        display: flex;
+        justify-content: center;
+        margin-bottom: .5rem;
+    }
+    .eg-trust-badge-text {
+        font-size: .8em;
+        line-height: 1.2;
+    }
+
+    /*
+        Styles based on settings
+    */
+    #eg-trust-badges-list-{{ section.id }} {
+        {% unless section.settings.bg_color == 'rgba(0,0,0,0)' %}
+            background-color: {{ section.settings.bg_color }};
+        {% endunless %}
+        {% unless section.settings.color == 'rgba(0,0,0,0)' %}
+            color: {{ section.settings.color }};
+        {% endunless %}
+        padding-top: {{ section.settings.pt }}rem;
+        padding-bottom: {{ section.settings.pb }}rem;
+        margin-top: {{ section.settings.mt }}rem;
+        margin-bottom: {{ section.settings.mb }}rem;
+    }
+</style>
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const productForm = document.querySelector('.product .product-form')
+
+        if (!productForm) {
+            return
+        }
+
+        const templateContent =  document.querySelector('#eg-trust-badges-template-{{ section.id }}').content
+        console.log(templateContent)
+
+        productForm.insertAdjacentElement('afterend', templateContent.firstElementChild)
+
+    })
+</script>
+
+<template id="eg-trust-badges-template-{{ section.id }}">
+    <ul
+        id="eg-trust-badges-list-{{ section.id }}"
+        class="eg-trust-badges-list"
+        aria-label="{{ section.settings.list_label }}">
+        {% for block in section.blocks %}
+            <li class="eg-trust-badge-item">
+                {% unless block.settings.icon == blank %}
+                    <div class="eg-trust-badge-icon">
+                        {{ block.settings.icon }}
+                    </div>
+                {% endunless %}
+                <div class="eg-trust-badge-text rte">
+                    {{ block.settings.text }}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</template>
+
+{% schema %}
+{
+    "name": "Trust Badges",
+    "settings": [
+        {
+            "type": "paragraph",
+            "content": "NOTE: You must save the changes in your editor in order to view them."
+        },
+        {
+            "type": "header",
+            "content": "General"
+        },
+        {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Background color"
+        },
+        {
+            "type": "color",
+            "id": "color",
+            "label": "Text color"
+        },
+        {
+            "type": "text",
+            "id": "list_label",
+            "label": "List label",
+            "info": "Used for accessibility purposes",
+            "default": "شارات الثقة"
+        },
+        {
+            "type": "range",
+            "id": "pt",
+            "label": "Padding top",
+            "min": 0,
+            "max": 12,
+            "step": 1,
+            "default": 0
+        },
+        {
+            "type": "range",
+            "id": "pb",
+            "label": "Padding bottom",
+            "min": 0,
+            "max": 12,
+            "step": 1,
+            "default": 0
+        },
+        {
+            "type": "range",
+            "id": "mt",
+            "label": "Margin top",
+            "min": 0,
+            "max": 12,
+            "step": 1,
+            "default": 0
+        },
+        {
+            "type": "range",
+            "id": "mb",
+            "label": "Margin bottom",
+            "min": 0,
+            "max": 12,
+            "step": 1,
+            "default": 2
+        }
+    ],
+    "blocks": [
+        {
+            "type": "item",
+            "name": "Item",
+            "settings": [
+                {
+                    "type": "html",
+                    "id": "icon",
+                    "label": "Icon code (SVG)",
+                    "default": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"30\" height=\"30\" fill=\"currentColor\" class=\"bi bi-truck\" viewbox=\"0 0 16 16\"><path d=\"M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z\"></path></svg>",
+                    "info": "You may get free SVG icons from a site like [Bootstrap icons](https://icons.getbootstrap.com/). Simply copy and paste the SVG code and change the 'width' and 'height' values accordingly."
+                },
+                {
+                    "type": "richtext",
+                    "id": "text",
+                    "label": "Text",
+                    "default": "<p>شحن مجاني لكل الطلبات</p>"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Trust badges",
+            "category": "Text"
+        }
+    ]
+}
+{% endschema %}

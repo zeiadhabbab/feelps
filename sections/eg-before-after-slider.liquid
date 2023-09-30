@@ -1,0 +1,281 @@
+{% liquid
+
+%}
+
+{% comment %}theme-check-disable{% endcomment %}
+<link href="https://unpkg.com/image-compare-viewer@1.5.0/dist/image-compare-viewer.min.css" rel="stylesheet">
+<script src="https://unpkg.com/image-compare-viewer@1.5.0/dist/image-compare-viewer.min.js" defer></script>
+{% comment %}theme-check-enable{% endcomment %}
+
+
+<style>
+    /* General */
+    .icv__wrapper {
+        z-index: 2;
+    }
+    .icv__label {
+        font-size: 13px;
+    }
+
+    /* Section styling */
+    .eg-before-after-slider {
+        margin-top: {{ section.settings.mt }}rem;
+        margin-bottom: {{ section.settings.mb }}rem;
+        {% if shop.locale contains 'ar' %}
+        direction: ltr;
+        {% endif %}
+    }
+</style>
+
+<script>
+window.addEventListener('DOMContentLoaded', (event) => {
+    const initImageCompare = () => {
+        const element = document.querySelector('#eg-before-after-slider-{{ section.id }} .eg-before-after-slider-compare')
+
+        const viewer = new ImageCompare(element, {
+            // UI
+            controlColor: element.dataset.controlColor,
+            controlShadow: true,
+            addCircle: element.dataset.addCircle === 'true',
+            addCircleBlur: false,
+            // Label
+            showLabels: element.dataset.showLabels,
+            labelOptions: {
+                before: element.dataset.labelBefore,
+                after: element.dataset.labelAfter,
+                onHover: element.dataset.labelOnHover === 'true'
+            },
+            // Smoothing
+            smoothing: element.dataset.smoothing,
+            smoothingAmount: element.dataset.smoothingAmount,
+            // Other options
+            hoverStart: element.dataset.hoverStart === 'true',
+            verticalMode: element.dataset.verticalMode === 'true',
+            startingPoint: element.dataset.startingPoint,
+            fluidMode: false
+        }).mount();
+    }
+    initImageCompare()
+
+    document.addEventListener('shopify:section:load', (e) => {
+        if (e.detail.sectionId === '{{ section.id }}') {
+            initImageCompare()
+        }
+    })
+})
+</script>
+
+<section
+    id="eg-before-after-slider-{{ section.id }}"
+    class="eg-before-after-slider">
+    <div
+        class="{% if section.settings.container %}container page-width{% endif %}"
+        style="margin-left: auto; margin-right: auto; max-width: {{ section.settings.max_width }}px">
+        <div
+            class="eg-before-after-slider-compare"
+            data-control-color="{{ section.settings.controlColor }}"
+            data-add-circle="{{ section.settings.addCircle }}"
+            data-show-labels="{{ section.settings.show_labels }}"
+            data-label-before="{{ section.settings.label_before }}"
+            data-label-after="{{ section.settings.label_after }}"
+            data-label-on-hover="{{ section.settings.label_on_hover }}"
+            data-smoothing="{{ section.settings.smoothing }}"
+            data-smoothing-amount="{{ section.settings.smoothing_amount }}"
+            data-hover-start="{{ section.settings.hover_start }}"
+            data-vertical-mode="{{ section.settings.vertical_mode }}"
+            data-starting-point="{{ section.settings.starting_point }}">
+            {% for block in section.blocks %}
+                <img
+                    src="{{ block.settings.img | image_url: width: block.settings.img_width, crop: 'center' }}"
+                    alt="{{ block.settings.img.alt }}"
+                    width="{{ block.settings.img_width }}"
+                    height="{{ block.settings.img_width | divided_by: block.settings.img.aspect_ratio | round }}"
+                    loading="lazy"/>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% schema %}
+{
+    "name": "Before After Slider",
+    "settings": [
+        {
+            "type": "header",
+            "content": "General"
+        },
+        {
+            "type": "checkbox",
+            "id": "container",
+            "label": "Wrap in a container",
+            "default": true
+        },
+        {
+            "type": "text",
+            "id": "max_width",
+            "label": "Max-width (px)",
+            "info": "Leave empty to disable"
+        },
+        {
+            "type": "header",
+            "content": "UI styling",
+            "info": "Please note that you must save the changes first in order to see them"
+        },
+        {
+            "type": "color",
+            "id": "controlColor",
+            "label": "Control Color",
+            "default": "#ffffff"
+        },
+        {
+            "type": "checkbox",
+            "id": "addCircle",
+            "label": "Add Circle",
+            "default": false
+        },
+        {
+            "type": "header",
+            "content": "Labels",
+            "info": "Please note that you must save the changes first in order to see them"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_labels",
+            "label": "Show Labels",
+            "default": true
+        },
+        {
+            "type": "text",
+            "id": "label_before",
+            "label": "Text before",
+            "default": "قبل"
+        },
+        {
+            "type": "text",
+            "id": "label_after",
+            "label": "Text after",
+            "default": "بعد"
+        },
+        {
+            "type": "checkbox",
+            "id": "label_on_hover",
+            "label": "Show labels on hover",
+            "default": false
+        },
+        {
+            "type": "header",
+            "content": "Smoothing",
+            "info": "Please note that you must save the changes first in order to see them"
+        },
+        {
+            "type": "checkbox",
+            "id": "smoothing",
+            "label": "Enable smoothing",
+            "default": true
+        },
+        {
+            "type": "range",
+            "id": "smoothing_amount",
+            "label": "Smoothing amount",
+            "default": 100,
+            "min": 0,
+            "max": 1000,
+            "step": 10
+        },
+        {
+            "type": "header",
+            "content": "Other options",
+            "info": "Please note that you must save the changes first in order to see them"
+        },
+        {
+            "type": "checkbox",
+            "id": "hover_start",
+            "label": "Hover start",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "vertical_mode",
+            "label": "Vertical model",
+            "default": false
+        },
+        {
+            "type": "range",
+            "id": "starting_point",
+            "label": "Starting point",
+            "default": 50,
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "info": "The percentage to show of the before image"
+        },
+        {
+            "type": "header",
+            "content": "Spacing",
+            "info": "Based on 'rem' values [Learn more](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units)"
+        },
+        {
+            "type": "range",
+            "id": "mt",
+            "label": "Margin top",
+            "min": 0,
+            "max": 12,
+            "step": 1,
+            "default": 0
+        },
+        {
+            "type": "range",
+            "id": "mb",
+            "label": "Margin bottom",
+            "min": 0,
+            "max": 12,
+            "step": 1,
+            "default": 0
+        }
+    ],
+    "blocks": [
+        {
+            "type": "image_before",
+            "name": "Image before",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "img",
+                    "label": "Image"
+                },
+                {
+                    "type": "text",
+                    "id": "img_width",
+                    "label": "Image width (px)",
+                    "default": "1200"
+                }
+            ]
+        },
+        {
+            "type": "image_after",
+            "name": "Image after",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "img",
+                    "label": "Image"
+                },
+                {
+                    "type": "text",
+                    "id": "img_width",
+                    "label": "Image width (px)",
+                    "default": "1200"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Before After Slider",
+            "category": "Image"
+        }
+    ]
+}
+{% endschema %}

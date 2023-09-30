@@ -1,0 +1,156 @@
+{% liquid
+    assign low_stock_count      = 10
+
+    assign text_stock_normal    = 'Currently, <b>[count] items</b> are in stock!'
+    assign color_stock_normal   = '#1976D2'
+    assign width_stock_normal   = '80%'
+
+    assign text_stock_low       = 'Only, <b>[count] items</b> are left in stock!'
+    assign color_stock_low      = '#F9A825'
+    assign width_stock_low      = '10%'
+
+    assign text_stock_none      = 'Unfortunately, this item is sold-out!'
+    assign color_stock_none     = '#D32F2F'
+    assign width_stock_none     = '0%'
+%}
+
+
+{% if request.page_type == 'product' and product.tags contains 'stock-indicator-bar' and product.selected_or_first_available_variant.inventory_policy == 'deny' %}
+
+{% liquid
+    assign current_variant = product.selected_or_first_available_variant
+
+    if current_variant.inventory_quantity <= 0
+        assign text = text_stock_none
+        assign color = color_stock_none
+        assign width = width_stock_none
+    elsif current_variant.inventory_quantity <= low_stock_count
+        assign text = text_stock_low | replace: '[count]', current_variant.inventory_quantity
+        assign color = color_stock_low
+        assign width = width_stock_low
+    else
+        assign text = text_stock_normal | replace: '[count]', current_variant.inventory_quantity
+        assign color = color_stock_normal
+        assign width = width_stock_normal
+    endif
+%}
+
+<style>
+/*
+    Bootstrap Progress bar
+    https://github.com/twbs/bootstrap/blob/main/dist/css/bootstrap.css
+*/
+@-webkit-keyframes progress-bar-stripes {
+    0% { background-position-x: 1rem; }
+}
+
+@keyframes progress-bar-stripes {
+    0% { background-position-x: 1rem; }
+}
+
+.progress {
+    display: flex;
+    height: 1rem;
+    overflow: hidden;
+    font-size: 0.75rem;
+    background-color: #e9ecef;
+    border-radius: 50rem;
+}
+
+.progress-bar {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #0d6efd;
+    transition: width 0.6s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .progress-bar { transition: none; }
+}
+
+.progress-bar-striped {
+    background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+    background-size: 1rem 1rem;
+}
+
+.progress-bar-animated {
+    -webkit-animation: 1s linear infinite progress-bar-stripes;
+    animation: 1s linear infinite progress-bar-stripes;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .progress-bar-animated {
+        -webkit-animation: none;
+        animation: none;
+    }
+}
+
+/*
+    Snippet styles
+*/
+#eg-stock-indicator-bar {
+    margin-bottom: 1.75rem;
+}
+
+#eg-stock-indicator-bar-text {
+    margin: 0 0 0.25rem;
+}
+</style>
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+    const egStockIndicatorBar = document.querySelector('#eg-stock-indicator-bar')
+
+    egStockIndicatorBar.style.display = 'block'
+    document.querySelector('button[name="add"]').insertAdjacentElement('beforebegin', egStockIndicatorBar)
+
+    const initWidth = () => {
+        setTimeout(() => {
+            const progressBar = document.querySelector('#eg-stock-indicator-bar .progress-bar')
+            progressBar.style.width = progressBar.dataset.width
+        }, 500)
+    }
+    initWidth()
+
+    document.querySelector('[name="id"]').addEventListener('change', async () => {
+        document.querySelector('#eg-stock-indicator-bar-inner').style.opacity = '.25'
+
+        const respoonse = await fetch(window.location.href)
+        const data = await respoonse.text()
+
+        const parser = new DOMParser()
+        const newDocument = parser.parseFromString(data, 'text/html')
+
+        document.querySelector('#eg-stock-indicator-bar-inner')
+            .replaceWith(newDocument.querySelector('#eg-stock-indicator-bar-inner'))
+
+        initWidth()
+    })
+})
+</script>
+
+<div id="eg-stock-indicator-bar" style="display: none;">
+    <div id="eg-stock-indicator-bar-inner">
+        <p id="eg-stock-indicator-bar-text">
+            {{ text }}
+        </p>
+        <div class="progress">
+            <div
+                class="progress-bar progress-bar-striped progress-bar-animated"
+                role="progressbar"
+                aria-valuenow="{{ width | replace: '%', '' }}"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                data-width="{{ width }}"
+                style="background-color: {{ color }}; width: 0%;">
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}

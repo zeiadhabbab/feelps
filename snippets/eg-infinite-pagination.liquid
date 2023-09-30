@@ -1,0 +1,53 @@
+{% liquid
+    assign text_load_more = 'Load more'
+    assign text_showing_of = 'Showing [count] of [total] products'
+%}
+
+<script src="{{ 'eg-infinite-pagination.js' | asset_url }}" defer></script>
+
+<style>
+#eg-infinite-pagination {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+}
+#eg-infinite-pagination .progress-line {
+    height: 1px;
+    margin: -0.5rem 0 2rem;
+    background-color: rgba(0, 0, 0, .1);
+}
+#eg-infinite-pagination .progress-line-inner {
+    height: 1px;
+    background-color: var(--gradient-base-accent-1);
+}
+#eg-infinite-pagination button svg.material-icon {
+    margin-right: .5rem;
+    animation: eg_infinite_pagination_svg_animation 1.25s ease-out infinite
+}
+
+@keyframes eg_infinite_pagination_svg_animation {
+    from { transform: translateY(-.25rem); }
+    to { transform: translateY(.25rem); }
+}
+</style>
+
+<div id="eg-infinite-pagination">
+    <p data-text-showing-of>
+        {% assign count = paginate.current_offset | plus: collection.products.size %}
+        {% assign total = paginate.items %}
+        {{ text_showing_of | replace: '[count]', count | replace: '[total]', total }}
+    </p>
+    <div class="progress-line" aria-hidden="true">
+        {% assign progress_line_width = count | times: 100.0 | divided_by: total | round | append: '%' %}
+        <div class="progress-line-inner" style="width: {{ progress_line_width }};">
+        </div>
+    </div>
+    {% if paginate.next %}
+        <button class="button button--secondary w-100" type="button" data-next-page-url="{{ paginate.next.url }}" onclick="egLoadNextPage(this)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="material-icon material-icon-keyboard-double-arrow-down" viewBox="0 0 24 24">
+                <g><g><polygon points="18,6.41 16.59,5 12,9.58 7.41,5 6,6.41 12,12.41"></polygon><polygon points="18,13 16.59,11.59 12,16.17 7.41,11.59 6,13 12,19"></polygon></g></g>
+            </svg>
+            {{ text_load_more }}
+        </button>
+    {% endif %}
+</div>

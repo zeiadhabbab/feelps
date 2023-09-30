@@ -1,0 +1,260 @@
+{% liquid
+
+%}
+
+{% if section.settings.enable_section %}
+{% if section.settings.show_only_homepage == false or template.name == 'index' %}
+
+<link href="{{ 'eg-newsletter-popup.css' | asset_url }}" rel="stylesheet">
+<script src="{{ 'micromodal.min.js' | asset_url }}" defer></script>
+<script src="{{ 'confetti.min.js' | asset_url }}" defer></script>
+<script src="{{ 'eg-newsletter-popup.js' | asset_url }}" defer></script>
+
+<div
+    id="eg-newsletter-modal"
+    class="micromodal micromodal-slide"
+    aria-hidden="true"
+    data-delay="{{ section.settings.delay }}"
+    data-days-to-wait="{{ section.settings.days_to_wait }}">
+    <div
+        class="micromodal__overlay"
+        tabindex="-1"
+        data-micromodal-close
+        style="
+            background-color: rgba(0, 0, 0, {{ section.settings.overlay_opacity | divided_by: 100.00 }});
+            backdrop-filter: blur({{ section.settings.overlay_blur | append: 'px' }});
+        ">
+        <div
+            class="micromodal__container"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="eeg-newsletter-modal-label"
+            style="
+                max-width: {{ section.settings.max_width }}px;
+                border-radius: {{ section.settings.border_radius }};
+                text-align: {{ section.settings.text_align }};
+            ">
+            <button class="micromodal__close" aria-label="Close modal" data-micromodal-close="">
+            </button>
+            {% if section.settings.img %}
+                <img
+                    id="eg-newsletter-modal-img"
+                    src="{{ section.settings.img | image_url: width: section.settings.img_width, height: section.settings.img_height, crop: 'center' }}"
+                    alt="{{ section.settings.img.alt }}"
+                    width="{{ section.settings.img_width }}"
+                    height="{{ section.settings.img_height }}"
+                    loading="lazy">
+            {% endif %}
+            <div class="micromodal__container-inner">
+                <header class="micromodal__header">
+                    <h2
+                        id="eg-newsletter-modal-label"
+                        class="micromodal__title {{ section.settings.title_size }}">
+                        {{ section.settings.title }}
+                    </h2>
+                </header>
+                <main class="micromodal__content">
+                    {% unless section.settings.description == blank %}
+                        <div id="eg-newsletter-popup-description" class="rte">
+                            {{ section.settings.description }}
+                        </div>
+                    {% endunless %}
+                    {% form 'customer' %}
+                        <input type="hidden" name="contact[tags]" value="newsletter">
+                        {{ form.errors | default_errors }}
+                        <div class="field">
+                            <input
+                                id="eg-newsletter-modal-input"
+                                type="email"
+                                name="contact[email]"
+                                size="30"
+                                class="form-control field__input"
+                                value="{% if customer.email != blank %}{{ customer.email }}{% endif %}"
+                                placeholder="{{ section.settings.text_form_input_label }}"
+                                autocorrect="off"
+                                autocapitalize="off">
+                            <label class="field__label" for="eg-newsletter-modal-input">
+                                {{ section.settings.text_form_input_label }}
+                            </label>
+                        </div>
+                        <button
+                            class="btn button btn-primary button--primary"
+                            type="submit"
+                            name="commit">
+                            {{ section.settings.text_form_btn_text }}
+                        </button>
+                    {% endform %}
+                    {% unless section.settings.note == blank %}
+                        <div id="eg-newsletter-popup-note" class="rte">
+                            {{ section.settings.note }}
+                        </div>
+                    {% endunless %}
+                </main>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+{% endif %}
+
+{% schema %}
+{
+    "name": "Newsletter Popup",
+    "settings": [
+        {
+            "type": "header",
+            "content": "General"
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_section",
+            "label": "Enable section",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "show_only_homepage",
+            "label": "Show only on the homepage",
+            "default": true
+        },
+        {
+            "type": "range",
+            "id": "delay",
+            "label": "Delay (sec)",
+            "info": "The time to wait before showing the modal. (in seconds)",
+            "default": 5,
+            "min": 1,
+            "max": 20
+        },
+        {
+            "type": "range",
+            "id": "days_to_wait",
+            "label": "Days to wait",
+            "info": "Days to wait before showing the popup again.",
+            "default": 3,
+            "min": 1,
+            "max": 30
+        },
+        {
+            "type": "header",
+            "content": "Modal styling"
+        },
+        {
+            "type": "range",
+            "id": "overlay_opacity",
+            "label": "Overlay opacity",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 50
+        },
+        {
+            "type": "range",
+            "id": "overlay_blur",
+            "label": "Overlay blur",
+            "min": 0,
+            "max": 20,
+            "step": 1,
+            "default": 10
+        },
+        {
+            "type": "text",
+            "id": "max_width",
+            "label": "Max width (px)",
+            "default": "800",
+            "info": "Maximum modal width (in pixels)"
+        },
+        {
+            "type": "text",
+            "id": "border_radius",
+            "label": "Border radius",
+            "default": "1rem"
+        },
+        {
+            "type": "select",
+            "id": "text_align",
+            "label": "Text align",
+            "default": "center",
+            "options": [
+                { "value": "left", "label": "Left" },
+                { "value": "center", "label": "Center" },
+                { "value": "right", "label": "Right" }
+            ]
+        },
+        {
+            "type": "header",
+            "content": "Image"
+        },
+        {
+            "type": "image_picker",
+            "id": "img",
+            "label": "Image"
+        },
+        {
+            "type": "text",
+            "id": "img_width",
+            "label": "Image width (px)",
+            "default": "600"
+        },
+        {
+            "type": "text",
+            "id": "img_height",
+            "label": "Image Height (px)",
+            "default": "600"
+        },
+        {
+            "type": "header",
+            "content": "Text"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Want 10% Off Right Now?!"
+        },
+        {
+            "type": "select",
+            "id": "title_size",
+            "label": "Title size",
+            "default": "h2",
+            "options": [
+                { "group": "Heading", "value": "h1", "label": "H1" },
+                { "group": "Heading", "value": "h2", "label": "H2" },
+                { "group": "Heading", "value": "h3", "label": "H3" },
+                { "group": "Heading", "value": "h4", "label": "H4" },
+                { "group": "Heading", "value": "h5", "label": "H5" },
+                { "group": "Heading", "value": "h6", "label": "H6" }
+            ]
+        },
+        {
+            "type": "richtext",
+            "id": "description",
+            "label": "Description",
+            "default": "<p>Be the first to know about our latest offers and <b>get 10% off your next order</b></p>"
+        },
+        {
+            "type": "richtext",
+            "id": "note",
+            "label": "Note",
+            "default": "<p>By subscribing you agree to our Terms of Service and you give us the right to send promotional newsletters. <br>Note: You may unsubsribe anytime.</p>"
+        },
+        {
+            "type": "header",
+            "content": "Translatable Text"
+        },
+        {
+            "type": "text",
+            "id": "text_form_input_label",
+            "label": "Input label",
+            "default": "Enter your email address"
+        },
+        {
+            "type": "text",
+            "id": "text_form_btn_text",
+            "label": "Button text",
+            "default": "Subscribe"
+        }
+    ]
+}
+{% endschema %}

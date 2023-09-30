@@ -1,0 +1,182 @@
+/*
+    Micromodal
+*/
+.micromodal {
+    visibility: hidden;
+}
+
+.micromodal.is-open {
+    visibility: visible;
+}
+
+.micromodal__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, .5);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    visibility: hidden;
+    opacity: 0;
+    transition: all .2s ease-out;
+}
+
+.micromodal.is-open .micromodal__overlay {
+    visibility: visible;
+    opacity: 1;
+    transition: all .2s ease-out;
+}
+
+.micromodal__container {
+    background-color: #fff;
+    padding: 1.5rem;
+    margin: 1rem;
+    max-width: 500px;
+    max-height: 100vh;
+    border-radius: 4px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    transition: all .2s ease-out;
+    transform: scale(0);
+}
+
+.micromodal.is-open .micromodal__container {
+    transform: scale(1);
+}
+
+@media (min-width: 600px) {
+    .micromodal__container {
+        padding: 3rem;
+    }
+}
+
+.micromodal__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.micromodal__title {
+    margin: 0 0 .75rem;
+}
+
+.micromodal__close {
+    background: transparent;
+    border: 0;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    cursor: pointer;
+    margin-right: -1rem;
+    font-size: 16px;
+    transition: all .2s ease-out;
+    opacity: .75;
+}
+
+.micromodal__close:hover {
+    opacity: 1;
+}
+
+.micromodal__close:before {
+    content: "\2715";
+}
+
+.micromodal__content {
+    line-height: normal;
+}
+
+.micromodal__content .rte {
+    margin-bottom: 1.75rem;
+}
+
+.micromodal__btn {
+    width: 100%;
+}
+
+
+/*
+    Section settings
+*/
+#eg-newsletter-modal .micromodal__container {
+    padding: 0;
+}
+
+#eg-newsletter-modal .micromodal__container-inner {
+    padding: 20px;
+}
+
+#eg-newsletter-modal .micromodal__header {
+    display: block;
+    margin: 0 0 6px;
+}
+
+#eg-newsletter-modal .micromodal__title {
+    margin: 0;
+}
+
+#eg-newsletter-modal .micromodal__close {
+    margin-right: 0;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: white;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    opacity: 1;
+    transition: all .2s ease-out;
+}
+
+#eg-newsletter-modal .micromodal__close:hover,
+#eg-newsletter-modal .micromodal__close:focus {
+    transform: rotate(180deg);
+}
+
+#eg-newsletter-popup-description {
+    margin-bottom: 24px;
+}
+
+#eg-newsletter-popup-note {
+    margin-top: 16px;
+    font-size: 14px;
+    font-style: italic;
+}
+
+#eg-newsletter-modal-img {
+    max-width: 100%;
+    height: auto;
+}
+
+#eg-newsletter-modal .field {
+    margin-bottom: 12px;
+}
+
+#eg-newsletter-modal .btn {
+    width: 100%;
+}
+
+@media (max-width: 749px) {
+    #eg-newsletter-modal-img {
+        max-height: 30vh;
+        object-fit: cover;
+    }
+}
+
+@media (min-width: 750px) {
+    #eg-newsletter-modal .micromodal__container {
+        display: flex;
+        align-items: center;
+        flex-direction: row-reverse;
+    }
+    #eg-newsletter-modal .micromodal__container-inner {
+        width: 50%;
+    }
+    #eg-newsletter-modal-img {
+        width: 50%;
+    }
+}
